@@ -1,6 +1,8 @@
 clipboard-monitor
 ==============
 
+[![Build status](https://ci.appveyor.com/api/projects/status/n4rw9upyahe79j4p/branch/master?svg=true)](https://ci.appveyor.com/project/DoumanAsh/clipboard-monitor/branch/master)
+
 Clipboard monitoring utilities
 
 # Clipboard Monitor
