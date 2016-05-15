@@ -1,8 +1,11 @@
 
 environment:
+  git_token:
+    secure: H5PQSeh6rHOoDLktlYlVLYu/iJMTwzzNVk8Wr//nqbYC7xrJuGDwKwiev/0Bl2d3
   global:
     NEW_TAG: "none"
     PROJECT_NAME: clipboard-monitor
+    MAIL: "douman@gmx.se"
   matrix:
     # Stable channel only?
     - TARGET: i686-pc-windows-gnu
@@ -28,6 +31,7 @@ build: false
 
 test_script:
   - cargo build
+  - cargo test
   - powershell -version 3 -File is_release.ps1
 
 before_deploy:
@@ -46,8 +50,7 @@ deploy:
   description: "Just monitor and VN script"
   # All the zipped artifacts will be deployed
   artifact: /.*\.zip/
-  auth_token:
-    secure: H5PQSeh6rHOoDLktlYlVLYu/iJMTwzzNVk8Wr//nqbYC7xrJuGDwKwiev/0Bl2d3
+  auth_token: "$(git_token)"
   provider: GitHub
   on:
     CHANNEL: stable

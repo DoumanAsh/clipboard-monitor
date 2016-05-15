@@ -5,6 +5,7 @@ function cargo_version {
     return $version
 }
 
+echo "NEW_TAG=$($env:NEW_TAG)"
 if ($env:appveyor_repo_tag -eq "true") {
     Add-AppveyorMessage -Message "Tag has been pushed"
     $version = cargo_version
@@ -18,14 +19,25 @@ if ($env:appveyor_repo_tag -eq "true") {
 }
 elseif ($env:NEW_TAG -eq "none") {
     $version = cargo_version
-    git tag -a $version -m "$version" 2> $null
+    git tag -a $version -m "$version"
 
     if ($LASTEXITCODE -eq 0) {
+        # push draft tag to avoid double build
+        git config --global credential.helper store
+        Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:git_token):x-oauth-basic@github.com\n"
+        git config --global user.name "AppVeyor bot"
+        git config --global user.email "$env:MAIL"
+        git config remote.origin.url "https://$($env:git_token)@github.com/$($env:APPVEYOR_REPO_NAME).git"
+        git push --tags
+
         Add-AppveyorMessage -Message "Publish new crate version $version"
         # Use AppVeyor API to set variables properly within one build job
-        Set-AppveyorBuildVariable -name "NEW_TAG" -Value $version
+        $env:NEW_TAG = $version
+        echo "set NEW_TAG=$($env:NEW_TAG)"
         Set-AppveyorBuildVariable -Name "APPVEYOR_REPO_TAG_NAME" -Value $version
         Set-AppveyorBuildVariable -Name "APPVEYOR_REPO_TAG" -Value "true"
+        echo "set APPVEYOR_REPO_TAG_NAME=$($env:APPVEYOR_REPO_TAG_NAME)"
+        echo "set APPVEYOR_REPO_TAG=$($env:APPVEYOR_REPO_TAG)"
     }
     else {
         Add-AppveyorMessage -Message "New version publish is not required"
