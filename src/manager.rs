@@ -1,7 +1,11 @@
 //! Clipboard Manager implementation
 extern crate clipboard_win;
-use clipboard_win::{WindowsError, get_clipboard_string};
+extern crate windows_error;
+
+use clipboard_win::{get_clipboard_string};
 use clipboard_win::wrapper::{get_clipboard_seq_num, is_format_avail};
+use self::windows_error::WindowsError;
+
 use std;
 use std::time::Duration;
 
@@ -17,8 +21,14 @@ pub struct ClipboardManager {
 }
 
 impl ClipboardManager {
-    fn default_ok(text: &String) -> () { println!("Clipboard content: {}", &text); }
-    fn default_err(err_code: &WindowsError) -> () { println!("Failed to get clipboard. Reason:{}", err_code.errno_desc()); }
+    fn default_ok(text: &String) -> () {
+        println!("Clipboard content: {}", &text);
+    }
+
+    fn default_err(err_code: &WindowsError) -> () {
+        println!("Failed to get clipboard. Reason:{}", err_code.errno_desc());
+    }
+
     ///Constructs new ClipboardManager with default settings
     pub fn new() -> ClipboardManager {
         ClipboardManager {
@@ -36,7 +46,7 @@ impl ClipboardManager {
 
     ///Sets callback for successfully retrieved clipboard's text.
     pub fn ok_callback(&mut self, callback: fn(&String) -> ()) -> &mut ClipboardManager
-     {
+    {
         self.ok_fn = callback;
         self
     }
@@ -45,7 +55,7 @@ impl ClipboardManager {
     ///
     ///Error code is passed from ```get_clipboard_string()```
     pub fn err_callback(&mut self, callback: fn(&WindowsError) -> ()) -> &mut ClipboardManager
-     {
+    {
         self.err_fn = callback;
         self
     }

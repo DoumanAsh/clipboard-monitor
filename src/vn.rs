@@ -9,6 +9,7 @@ mod evolimit;
 mod genrin2;
 mod izumo;
 mod senkou;
+mod baldr_heart;
 
 use std::env::args as cmd_args;
 
@@ -16,6 +17,7 @@ const USAGE: &'static str = "Usage: vn_text_corrector <type>
 
 Types:
     alpha_ride
+    baldr_heart
     evolimit
     genrin2
     izumo
@@ -48,7 +50,9 @@ fn main() {
                                                .as_ref()
                                                .map(|s| &**s) {
         None => handler_clip_text,
+        Some("vn") => handler_clip_text,
         Some("alpha_ride") => alpha_ride::handler_clip_text,
+        Some("baldr_heart") => baldr_heart::handler_clip_text,
         Some("senkou") => senkou::handler_clip_text,
         Some("izumo") => izumo::handler_clip_text,
         Some("genrin2") => genrin2::handler_clip_text,
@@ -64,7 +68,9 @@ fn main() {
         }
     };
 
-    println!("Start text corrector\n");
+    println!("###########################");
+    println!("#   VN Text corrector     #");
+    println!("###########################");
 
     manager::ClipboardManager::new().delay(10)
                                     .ok_callback(handler)

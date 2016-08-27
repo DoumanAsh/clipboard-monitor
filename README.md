@@ -18,6 +18,7 @@ Following actions are performed:
 - Default VN mode extracts dialogue.
 - Special modes to improve ITH text for following games:
     - [Alpha Ride](https://vndb.org/v14325)
+    - [Baldr Heart](https://vndb.org/v18783)
     - [Evolimit](https://vndb.org/v3111)
     - [Genrin no Kishougun 2](https://vndb.org/v507)
     - [Izumo 4](https://vndb.org/v18039)
