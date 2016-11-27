@@ -2,7 +2,7 @@
 
 extern crate clipboard_win;
 use clipboard_win::{set_clipboard};
-use utils;
+use ::utils;
 
 pub fn handler_clip_text(text: &String) {
     if !utils::is_jp(text) { return; }

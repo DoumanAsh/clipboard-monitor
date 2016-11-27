@@ -4,16 +4,13 @@ extern crate clipboard_win;
 use clipboard_win::{set_clipboard};
 mod utils;
 mod manager;
-mod alpha_ride;
-mod evolimit;
-mod genrin2;
-mod izumo;
-mod senkou;
-mod baldr_heart;
+
+mod vns;
+use vns::*;
 
 use std::env::args as cmd_args;
 
-const USAGE: &'static str = "Usage: vn_text_corrector <type>
+const USAGE: &'static str = "Usage: vn_text_corrector [options] <type>
 
 Types:
     alpha_ride
@@ -22,7 +19,11 @@ Types:
     genrin2
     izumo
     senkou
+    KiriKiriZ
     vn          - default.
+
+Options:
+    -h, --help  - Prints this help messsage.
 ";
 
 fn handler_clip_text(text: &String) {
@@ -57,6 +58,7 @@ fn main() {
         Some("izumo") => izumo::handler_clip_text,
         Some("genrin2") => genrin2::handler_clip_text,
         Some("evolimit") => evolimit::handler_clip_text,
+        Some("KiriKiriZ") => kiri_kiri_z::handler_clip_text,
         Some("-h") | Some("--help") => {
             println!("{}", USAGE);
             return;
